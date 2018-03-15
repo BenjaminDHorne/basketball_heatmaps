@@ -1,32 +1,57 @@
 <!DOCTYPE html>
+
 <html>
     <head>
+        <title>{% block title %}Player Stats Input{% endblock %}</title>
         <meta charset="UTF-8" />
-        <title>{% block title %}Player Input{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <!--[if lte IE 8]><script src="{{ asset('js/ie/html5shiv.js') }}"></script><![endif]-->
+            <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+            <!--[if lte IE 8]><link rel="stylesheet" href="{{  asset('css/ie8.css') }}"><![endif]-->
+            <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
-        <div class="container container-fluid">
-            <div class="row">
-                <div class="{{ sidebarColClass }}">
-                    <ul id="sidebar" class="nav nav-stacked affix sidebar-nav auto-overflow">
-                        {% block sidebar %}{% endblock %}
-                    </ul>
+
+    <body id="top">
+        {% if "login" not in app.request.uri and "sign_up" not in app.request.uri %}
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container-fluid">
+                    {% if app.user != null %}
+                        {% if app.user.username == "admin" %}
+                            <a href="/add_new_pro_stats"><button class="btn btn-primary theme-button">add new pro data</button></a>
+                        {% endif %}
+                        <a href="/logout"><button class="btn btn-primary theme-button">log out</button></a>
+                    {% elseif "\input" in app.request.uri %}
+                        <a href="/login"><button class="btn btn-primary theme-button">log in </button></a> or <a href="/sign_up"><button class="btn btn-primary theme-button"> sign up! </button></a>
+                    {% endif %}
                 </div>
-                <div id="body-content" class="{{ bodyColClass }} auto-overflow">
-                    <div class="flash-wrapper">
-                        {% for msg in app.session.flashbag.get('success') %}
-                            <div class="alert alert-success">{{ msg }}</div>
-                        {% endfor %}
-                    </div>
-                    {% block body %}{% endblock %}
+            </nav>
+        {% endif %}
+
+        <div class="group">
+            <header id="header">
+                <div class="inner">
+                    {% block sidebar %}{% endblock %}
                 </div>
+            </header>
+        </div>
+
+        <div id="main">
+            <div class="group">         
+                {% block body %}{% endblock %}
             </div>
         </div>
 
-        {% block javascripts %}{% endblock %}
+        <script src={{ asset('js/jquery.min.js') }}></script>
+        <script src={{ asset('js/jquery.poptrox.min.js') }}></script>
+        <script src={{ asset('js/skel.min.js') }}></script>
+        <script src={{ asset('js/util.js') }}></script>
+        <!--[if lte IE 8]><script src={{ asset('js/ie/respond.min.js') }}></script><![endif]-->
+        <script src={{ asset('js/main.js') }}></script>
+        {% block javascripts %}{% endblock %}    
     </body>
 </html>
+

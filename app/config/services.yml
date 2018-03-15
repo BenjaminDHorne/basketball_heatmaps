@@ -8,4 +8,19 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     heatmap_repository:
-        class: AppBundle\Repositories\HeatmapRepository
+        class: AppBundle\Repository\HeatmapRepository
+    app.form_login_authenticator:
+        class: AppBundle\Security\FormLoginAuthenticator
+        arguments: ["@router", "@security.password_encoder"]
+    user_data_set_repository:
+        class: AppBundle\Repository\UserDataSetRepository
+        arguments:
+          - "@doctrine.orm.entity_manager"
+    pro_data_set_repository:
+        class: AppBundle\Repository\ProDataSetRepository
+        arguments:
+          - "@doctrine.orm.entity_manager"
+    pro_repository:
+        class: AppBundle\Repository\ProRepository
+        arguments:
+          - "@doctrine.orm.entity_manager"
